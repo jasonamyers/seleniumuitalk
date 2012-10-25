@@ -336,7 +336,7 @@ class test_ui_functions(unittest.TestCase):
     #         self.assertTrue(self.result)
 
 
-    def test_incorrect_data(self):
+    def test_denied_party(self):
         test_info = {
             'test_type': 'denied_party',
             'tests' : {
