@@ -3,18 +3,20 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
+
 def webdriver_setup():
     driver = webdriver.Firefox()
     driver.implicitly_wait(10)
     return driver
+
 
 def load_test_site(driver):
     driver.get("http://demo.cube-star.com")
     time.sleep(3)
 
 
-def add_paperclips_to_cart(driver):    
-    driver.find_element_by_css_selector("img[alt=\"Put A Bird On It! Add some whimsey with CLIPIT Paper Clips\"]").click();
+def add_paperclips_to_cart(driver):
+    driver.find_element_by_css_selector("img[alt=\"Put A Bird On It! Add some whimsey with CLIPIT Paper Clips\"]").click()
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("li.item.last > div.actions > button.button.btn-cart"))
     elem.click()
 
@@ -111,13 +113,13 @@ def add_multiple_items_to_cart(driver):
     elem.click()
 
 
-
 def start_checkout_post_add_to_cart(driver):
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_xpath("//button[@type='button']"))
     elem.click()
 
 
 def process_checkout_as_guest(driver):
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("login:guest").is_displayed())
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("login:guest"))
     elem.click()
 
@@ -126,6 +128,7 @@ def process_checkout_as_guest(driver):
 
 
 def complete_billing_info(driver, address, test_type):
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("billing:firstname").is_displayed())
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("billing:firstname"))
     elem.send_keys(address['billing_firstname'])
 
@@ -176,7 +179,8 @@ def complete_billing_info(driver, address, test_type):
 
 
 def complete_shipping_info(driver, address):
-    
+
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("shipping:firstname").is_displayed())
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("shipping:firstname"))
     elem.send_keys(address['shipping_firstname'])
 
@@ -210,12 +214,12 @@ def complete_shipping_info(driver, address):
 
 
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-buttons-container > button.button"))
-    elem.click()    
+    elem.click()
 
 
 def choose_shipping_method(driver, country):
-    if country in ['Argentina', 'Japan']:
-        shipping_id = 's_method_bordership_FEDEX_PRIORITY'
+
+    shipping_id = 's_method_bordership_FEDEX_PRIORITY'
 
     if country == 'Australia':
         shipping_id = 's_method_bordership_AU_STANDARD'
@@ -226,6 +230,7 @@ def choose_shipping_method(driver, country):
     if country in ['Canada']:
         shipping_id = 's_method_bordership_CPC_STANDARD'
 
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id(shipping_id).is_displayed())
 
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id(shipping_id))
     elem.click()
@@ -235,9 +240,11 @@ def choose_shipping_method(driver, country):
 
 
 def choose_check_payment_method(driver):
-    time.sleep(3)
 
-    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("p_method_checkmo"))
+
+
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("p_method_checkmo").is_displayed())
+    elem = WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("p_method_checkmo"))
     elem.click()
 
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#payment-buttons-container > button.button"))
@@ -246,36 +253,25 @@ def choose_check_payment_method(driver):
 
 def complete_checkout(driver):
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("button.button.btn-checkout"))
-    elem.click()   
+    elem.click()
 
 
 def validate_checkout_success(driver):
-    time.sleep(3)
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_css_selector("h2.sub-title").is_displayed())
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("h2.sub-title"))
     if elem.text == 'Thank you for your purchase!':
         return True
     return False
 
+
 def take_default_shipping_method(driver):
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-method-buttons-container > button.button"))
-    elem.click()   
+    elem.click()
 
 
 
 def run_test(driver, test, test_type):
-    if test_type in ['general_country_testing']:
-        load_test_site(driver)
-        add_paperclips_to_cart(driver)
-        start_checkout_post_add_to_cart(driver)
-        process_checkout_as_guest(driver)
-        complete_billing_info(driver, test, test_type)
-        time.sleep(5)
-        choose_shipping_method(driver, test['billing_country'])
-        choose_check_payment_method(driver)
-        complete_checkout(driver)
-        validation = validate_checkout_success(driver)
-        return validation
-    elif test_type in ['domestic_shipping_fail']:
+    if test_type in ['domestic_shipping_fail']:
         load_test_site(driver)
         add_paperclips_to_cart(driver)
         start_checkout_post_add_to_cart(driver)
@@ -285,44 +281,26 @@ def run_test(driver, test, test_type):
         take_default_shipping_method(driver)
         choose_check_payment_method(driver)
         complete_checkout(driver)
-        validation = validate_checkout_success(driver)
-        return validation
+        return validate_checkout_success(driver)
     elif test_type in ['multiple_skus']:
         load_test_site(driver)
         add_multiple_items_to_cart(driver)
         start_checkout_post_add_to_cart(driver)
         process_checkout_as_guest(driver)
         complete_billing_info(driver, test, test_type)
-        time.sleep(10)
         choose_shipping_method(driver, test['billing_country'])
         choose_check_payment_method(driver)
         complete_checkout(driver)
-        validation = validate_checkout_success(driver)
-        return validation
-    elif test_type in ['invalid_characters', 'long_data', 'missing_data', 'denied_party']:
-        load_test_site(driver)
-        add_paperclips_to_cart(driver)
-        start_checkout_post_add_to_cart(driver)
-        process_checkout_as_guest(driver)
-        complete_billing_info(driver, test, test_type)
-        time.sleep(10)
-        choose_shipping_method(driver, test['billing_country'])
-        choose_check_payment_method(driver)
-        complete_checkout(driver)
-        validation = validate_checkout_success(driver)
-        return validation
-    elif test_type in ['incorrect_data']:
-        load_test_site(driver)
-        add_paperclips_to_cart(driver)
-        start_checkout_post_add_to_cart(driver)
-        process_checkout_as_guest(driver)
-        complete_billing_info(driver, test, test_type)
-        time.sleep(10)
-        choose_shipping_method(driver, test['billing_country'])
-        choose_check_payment_method(driver)
-        complete_checkout(driver)
-        validation = validate_checkout_success(driver)
-        return validation
+        return validate_checkout_success(driver)
     else:
-        print 'wrong test type'
+        load_test_site(driver)
+        add_paperclips_to_cart(driver)
+        start_checkout_post_add_to_cart(driver)
+        process_checkout_as_guest(driver)
+        complete_billing_info(driver, test, test_type)
+        choose_shipping_method(driver, test['billing_country'])
+        choose_check_payment_method(driver)
+        complete_checkout(driver)
+        return validate_checkout_success(driver)
+
 

@@ -10,6 +10,7 @@ from driver import (webdriver_setup,
                         complete_checkout,
                         run_test)
 
+
 class test_ui_functions(unittest.TestCase):
     
     def setUp(self):
@@ -17,36 +18,35 @@ class test_ui_functions(unittest.TestCase):
         self.result = False
 
 
-    # def tearDown(self):
-    #     self.driver.close()
+    def tearDown(self):
+        self.driver.close()
 
 
-    # def test_general_country_argentina(self):
-    #     argentina_test_info = {
-    #         'test_type': 'general_country_testing',
-    #         'tests': {
-    #             'test' : { 
-    #                 'billing_firstname' : 'Jason',
-    #                 'billing_lastname' : 'Myers',
-    #                 'billing_company' : 'Home',
-    #                 'billing_email' : 'jason.myers@borderjump.com',
-    #                 'billing_address1' : 'Calle Gral San Martin 230',
-    #                 'billing_address2' : 'Piso 4 DPTO A',
-    #                 'billing_city' : 'Villa Maria',
-    #                 'billing_state' : '',
-    #                 'billing_postal_code' : 'X5900FNF',
-    #                 'billing_country' : 'Argentina',
-    #                 'billing_telephone' : '615-796-6526'
-    #             },
-    #         },
-    #     }
+    def test_general_country_argentina(self):
+        argentina_test_info = {
+            'test_type': 'general_country_testing',
+            'tests': {
+                '1' : { 
+                    'billing_firstname' : 'Jason',
+                    'billing_lastname' : 'Myers',
+                    'billing_company' : 'Home',
+                    'billing_email' : 'jason.myers@borderjump.com',
+                    'billing_address1' : 'Calle Gral San Martin 230',
+                    'billing_address2' : 'Piso 4 DPTO A',
+                    'billing_city' : 'Villa Maria',
+                    'billing_state' : '',
+                    'billing_postal_code' : 'X5900FNF',
+                    'billing_country' : 'Argentina',
+                    'billing_telephone' : '615-796-6526'
+                },
+            },
+        }
 
-    #     for test in argentina_test_info['tests']:
-    #         test_type = argentina_test_info['test_type']
-    #         current_test = argentina_test_info['tests'][test]
-    #         print repr(current_test['billing_firstname'])
-    #         self.result = run_test(self.driver, current_test, test_type)
-    #         self.assertTrue(self.result)
+        for test in argentina_test_info['tests']:
+            test_type = argentina_test_info['test_type']
+            current_test = argentina_test_info['tests'][test]
+            self.result = run_test(self.driver, current_test, test_type)
+            self.assertTrue(self.result)
 
 
     # def test_general_country_australia(self):
@@ -336,42 +336,84 @@ class test_ui_functions(unittest.TestCase):
     #         self.assertTrue(self.result)
 
 
-    def test_denied_party(self):
-        test_info = {
-            'test_type': 'denied_party',
-            'tests' : {
-                '1' : { 
-                    'billing_firstname' : 'Jason',
-                    'billing_lastname' : 'Myers',
-                    'billing_company' : 'Home',
-                    'billing_email' : 'jason.myers@borderjump.com',
-                    'billing_address1' : u'2465 Cawthra Rd. #203',
-                    'billing_address2' : '',
-                    'billing_city' : 'Mississauga',
-                    'billing_state' : 'Ontario',
-                    'billing_postal_code' : 'L5A 3P2',
-                    'billing_country' : 'Canada',
-                    'billing_telephone' : '615-796-6526'
-                },
-                '2' : { 
-                    'billing_firstname' : 'Osama',
-                    'billing_lastname' : 'Bin Laden',
-                    'billing_company' : 'Home',
-                    'billing_email' : 'jason.myers@borderjump.com',
-                    'billing_address1' : u'West 4th Avenue',
-                    'billing_address2' : '',
-                    'billing_city' : 'Vancouver',
-                    'billing_state' : 'British Columbia',
-                    'billing_postal_code' : 'V6K 1P4',
-                    'billing_country' : 'Canada',
-                    'billing_telephone' : '615-796-6526'
-                },
-            },
-        }
+    # def test_denied_party(self):
+    #     test_info = {
+    #         'test_type': 'denied_party',
+    #         'tests' : {
+    #             '1' : { 
+    #                 'billing_firstname' : 'Jason',
+    #                 'billing_lastname' : 'Myers',
+    #                 'billing_company' : 'Home',
+    #                 'billing_email' : 'jason.myers@borderjump.com',
+    #                 'billing_address1' : u'2465 Cawthra Rd. #203',
+    #                 'billing_address2' : '',
+    #                 'billing_city' : 'Mississauga',
+    #                 'billing_state' : 'Ontario',
+    #                 'billing_postal_code' : 'L5A 3P2',
+    #                 'billing_country' : 'Canada',
+    #                 'billing_telephone' : '615-796-6526'
+    #             },
+    #             '2' : { 
+    #                 'billing_firstname' : 'Osama',
+    #                 'billing_lastname' : 'Bin Laden',
+    #                 'billing_company' : 'Home',
+    #                 'billing_email' : 'jason.myers@borderjump.com',
+    #                 'billing_address1' : u'West 4th Avenue',
+    #                 'billing_address2' : '',
+    #                 'billing_city' : 'Vancouver',
+    #                 'billing_state' : 'British Columbia',
+    #                 'billing_postal_code' : 'V6K 1P4',
+    #                 'billing_country' : 'Canada',
+    #                 'billing_telephone' : '615-796-6526'
+    #             },
+    #         },
+    #     }
 
-        for test in test_info['tests']:
-            test_type = test_info['test_type']
-            current_test = test_info['tests'][test]
-            print repr(current_test['billing_firstname'])
-            self.result = run_test(self.driver, current_test, test_type)
-            self.assertTrue(self.result)
+    #     for test in test_info['tests']:
+    #         test_type = test_info['test_type']
+    #         current_test = test_info['tests'][test]
+    #         print repr(current_test['billing_firstname'])
+    #         self.result = run_test(self.driver, current_test, test_type)
+    #         self.assertTrue(self.result)
+
+
+    # def test_zip_spacing(self):
+    #     test_info = {
+    #         'test_type': 'zip_spacing',
+    #         'tests' : {
+    #             '1' : { 
+    #                 'billing_firstname' : 'Jason',
+    #                 'billing_lastname' : 'Myers',
+    #                 'billing_company' : 'Home',
+    #                 'billing_email' : 'jason.myers@borderjump.com',
+    #                 'billing_address1' : u'Carrera San Jerónimo',
+    #                 'billing_address2' : '8',
+    #                 'billing_city' : 'Madrid',
+    #                 'billing_state' : 'Madrid',
+    #                 'billing_postal_code' : ' 28014',
+    #                 'billing_country' : 'Spain',
+    #                 'billing_telephone' : '615-796-6526'
+    #             },
+    #             '2' : { 
+    #                 'billing_firstname' : 'Jason',
+    #                 'billing_lastname' : 'Myers',
+    #                 'billing_company' : 'Home',
+    #                 'billing_email' : 'jason.myers@borderjump.com',
+    #                 'billing_address1' : u'Carrera San Jerónimo',
+    #                 'billing_address2' : '8',
+    #                 'billing_city' : 'Madrid',
+    #                 'billing_state' : 'Madrid',
+    #                 'billing_postal_code' : '28014 ',
+    #                 'billing_country' : 'Spain',
+    #                 'billing_telephone' : '615-796-6526'
+    #             },
+    #         },
+    #     }
+
+    #     for test in test_info['tests']:
+    #         test_type = test_info['test_type']
+    #         current_test = test_info['tests'][test]
+    #         print repr(current_test['billing_firstname'])
+    #         self.result = run_test(self.driver, current_test, test_type)
+    #         self.assertTrue(self.result)
+
