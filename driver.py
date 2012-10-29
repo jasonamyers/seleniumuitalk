@@ -179,7 +179,6 @@ def complete_billing_info(driver, address, test_type):
 
 
 def complete_shipping_info(driver, address):
-
     WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("shipping:firstname").is_displayed())
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("shipping:firstname"))
     elem.send_keys(address['shipping_firstname'])
@@ -212,7 +211,6 @@ def complete_shipping_info(driver, address):
         elem = WebDriverWait(driver, 10).until(lambda driver : Select(driver.find_element_by_id("shipping:region_id")))
         elem.select_by_visible_text(address['shipping_state'])
 
-
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-buttons-container > button.button"))
     elem.click()
 
@@ -240,14 +238,32 @@ def choose_shipping_method(driver, country):
 
 
 def choose_check_payment_method(driver):
-
-
-
     WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("p_method_checkmo").is_displayed())
     elem = WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("p_method_checkmo"))
     elem.click()
 
     elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#payment-buttons-container > button.button"))
+    elem.click()
+
+
+def take_default_shipping_method(driver):
+    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-method-buttons-container > button.button"))
+    elem.click()
+
+
+def test_shipping_quote_only(driver, address):
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_id("postcode").is_displayed())
+    elem = WebDriverWait(driver, 10).until(lambda driver : Select(driver.find_element_by_id("country")))
+    elem.select_by_visible_text(address['shipping_country'])
+
+    if address['shipping_country'] in ['United States', 'Spain', 'Canada']:
+        elem = WebDriverWait(driver, 10).until(lambda driver : Select(driver.find_element_by_id("region_id")))
+        elem.select_by_visible_text(address['shipping_state'])
+
+    elem = WebDriverWait(driver,10).until(lambda driver : driver.find_element_by_id("postcode"))
+    elem.send_keys(address['shipping_postal_code'])
+
+    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-zip-form > div.buttons-set > button.button"))
     elem.click()
 
 
@@ -264,11 +280,20 @@ def validate_checkout_success(driver):
     return False
 
 
-def take_default_shipping_method(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#shipping-method-buttons-container > button.button"))
-    elem.click()
+def validate_shipping_quote(driver):
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_css_selector("dl.sp-methods").is_displayed())
+    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_css_selector("#co-shipping-method-form > dl.sp-methods > dt"))
+    if elem.text == 'USPS':
+        return True
+    return False
 
 
+def validate_order_failure_shipping_step(driver):
+    WebDriverWait(driver, 300).until(lambda driver : driver.find_element_by_xpath('//p[contains(text(), "Sorry, no quotes are available for this order at this time.")]'))
+    elem = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_xpath('//p[contains(text(), "Sorry, no quotes are available for this order at this time.")]'))
+    if elem:
+        return True
+    return False
 
 def run_test(driver, test, test_type):
     if test_type in ['domestic_shipping_fail']:
@@ -292,6 +317,18 @@ def run_test(driver, test, test_type):
         choose_check_payment_method(driver)
         complete_checkout(driver)
         return validate_checkout_success(driver)
+    elif test_type in ['shipping_quote']:
+        load_test_site(driver)
+        add_paperclips_to_cart(driver)
+        test_shipping_quote_only(driver, test)
+        return validate_shipping_quote(driver)
+    elif test_type in ['incorrect_data']:
+        load_test_site(driver)
+        add_paperclips_to_cart(driver)
+        start_checkout_post_add_to_cart(driver)
+        process_checkout_as_guest(driver)
+        complete_billing_info(driver, test, test_type)
+        return validate_order_failure_shipping_step(driver)
     else:
         load_test_site(driver)
         add_paperclips_to_cart(driver)
@@ -302,5 +339,3 @@ def run_test(driver, test, test_type):
         choose_check_payment_method(driver)
         complete_checkout(driver)
         return validate_checkout_success(driver)
-
-
