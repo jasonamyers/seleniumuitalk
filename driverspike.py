@@ -18,110 +18,110 @@ def load_demo_site(driver):
 
 def add_paperclips_to_cart(driver):
     driver.find_element_by_css_selector("img[alt=\"Put A Bird On It! Add some whimsey with CLIPIT Paper Clips\"]").click()
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("li.item.last > div.actions > button.button.btn-cart"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("li.item.last > div.actions > button.button.btn-cart"))
     elem.click()
 
 
 def start_checkout_post_add_to_cart(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_xpath("//button[@type='button']"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_xpath("//button[@type='button']"))
     elem.click()
 
 
 def process_checkout_as_guest(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("login:guest"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("login:guest"))
     elem.click()
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("onepage-guest-register-button"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("onepage-guest-register-button"))
     elem.click()
 
 
 def complete_billing_info(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:firstname"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:firstname"))
     elem.send_keys("Jason")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:lastname"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:lastname"))
     elem.send_keys("Myers")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:company"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:company"))
     elem.send_keys("Home")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:email"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:email"))
     elem.send_keys("jason.myers@bordership.com")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:street1"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:street1"))
     elem.send_keys("117 Russel St")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:city"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:city"))
     elem.send_keys("London")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:postcode"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:postcode"))
     elem.send_keys("W1P6HQ")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:telephone"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:telephone"))
     elem.send_keys("615-556-3180")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: Select(driver.find_element_by_id("billing:country_id")))
+    elem = WebDriverWait(driver, 100).until(lambda driver: Select(driver.find_element_by_id("billing:country_id")))
     elem.select_by_visible_text("United Kingdom")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_xpath("//form[@id='co-billing-form']/fieldset/ul/li[3]/label"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_xpath("//form[@id='co-billing-form']/fieldset/ul/li[3]/label"))
     elem.click()
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("billing:use_for_shipping_no"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("billing:use_for_shipping_no"))
     elem.click()
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("#billing-buttons-container > button.button"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("#billing-buttons-container > button.button"))
     elem.click()
 
 
 def complete_shipping_info(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:firstname"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:firstname"))
     elem.send_keys("Jason")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:lastname"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:lastname"))
     elem.send_keys("Myers")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:company"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:company"))
     elem.send_keys("Work")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:street1"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:street1"))
     elem.send_keys("117 Russel St")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:city"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:city"))
     elem.send_keys("London")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:postcode"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:postcode"))
     elem.send_keys("W1P6HQ")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("shipping:telephone"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("shipping:telephone"))
     elem.send_keys("6157966526")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: Select(driver.find_element_by_id("shipping:country_id")))
+    elem = WebDriverWait(driver, 100).until(lambda driver: Select(driver.find_element_by_id("shipping:country_id")))
     elem.select_by_visible_text("United Kingdom")
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("#shipping-buttons-container > button.button"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("#shipping-buttons-container > button.button"))
     elem.click()
 
 
 def choose_shipping_method(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("s_method_bordership_EU_STANDARD"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("s_method_bordership_EU_STANDARD"))
     elem.click()
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("#shipping-method-buttons-container > button.button"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("#shipping-method-buttons-container > button.button"))
     elem.click()
 
 
 def choose_check_payment_method(driver):
     time.sleep(3)
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_id("p_method_checkmo"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_id("p_method_checkmo"))
     elem.click()
 
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("#payment-buttons-container > button.button"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("#payment-buttons-container > button.button"))
     elem.click()
 
 
 def complete_checkout(driver):
-    elem = WebDriverWait(driver, 10).until(lambda driver: driver.find_element_by_css_selector("button.button.btn-checkout"))
+    elem = WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_css_selector("button.button.btn-checkout"))
     elem.click()
 
 
